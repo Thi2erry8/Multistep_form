@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -20,20 +20,19 @@
         padding: 0;
         box-sizing: border-box;
       }
+      button {
+        border: none;
+      }
+      a {
+        text-decoration: none;
+      }
 
       body {
         height: 100vh;
-      }
-
-      .author-info {
-        font-size: 14px;
-        text-align: center;
-        margin-top: 16px;
-        color: rgb(55, 65, 81);
-      }
-
-      .author-info a {
-        text-decoration: none;
+        background-image: url("./resources/blur-radial.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
       }
     </style>
   </head>
@@ -76,11 +75,53 @@
     Step 3 of 3
      -->
 
-    <div class="author-info">
-      Coded by <a href="#">Your Name Here</a> | Challenge by
-      <a href="https://www.devchallenges.io?ref=challenge" target="_blank"
-        >devChallenges.io</a
-      >.
-    </div>
+    <form action="post">
+      <div class="form-div">
+        <h1>Register</h1>
+        <div>
+          <label for="name">name</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Enter your name"
+          />
+        </div>
+        <div>
+          <label for="email">email</label>
+          <input
+            type="text"
+            name="email"
+            id="name"
+            placeholder="Enter your email"
+          />
+        </div>
+      </div>
+
+      <div class="form-div">
+        <h1>Which topics are you interested in ?</h1>
+        <div class="">
+          <input
+            type="radio"
+            name="topics"
+            value="Software Development"
+            id=""
+          />
+          <label for="Software Development"></label>
+        </div>
+
+        <div class="">
+          <input type="radio" name="topics" value="User Experience" id="" />
+          <label for="User Experience"></label>
+        </div>
+
+        <div class="">
+          <input type="radio" name="topics" value="Graphics Design" id="" />
+          <label for="Graphics Design"></label>
+        </div>
+      </div>
+
+      <button>Continue</button>
+    </form>
   </body>
 </html>
