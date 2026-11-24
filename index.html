@@ -11,288 +11,328 @@
     />
     <title>Multi-step Register Form | devChallenges.io</title>
 
+    <!-- Police Inter pour correspondre au design -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-      /* --- RESET & VARIABLES --- */
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: "Inter", system-ui, sans-serif;
-      }
-
-      :root {
-        --bg-dark: #121826;
-        --card-bg: #212936;
-        --input-bg: #212936;
-        --input-border: #4d5562;
-        --text-main: #e5e7eb;
-        --text-muted: #a1a1aa;
-        --purple: #845eee;
-        --purple-hover: #6d44d8;
+        font-family: "Inter", sans-serif;
       }
 
       body {
         min-height: 100vh;
-        background-color: var(--bg-dark);
-        /* Simulation de la lumière violette en arrière-plan */
-        background-image: radial-gradient(
-          circle at 50% 50%,
-          rgba(132, 94, 238, 0.15) 0%,
-          transparent 40%
-        );
+        background-color: #121826;
+        background-image: url("./resources/blur-radial.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        color: var(--text-main);
-        padding: 20px;
+        color: #e5e7eb;
       }
 
-      /* --- CARTE PRINCIPALE --- */
-      form {
-        width: min(450px, 100%);
-        background-color: var(--card-bg);
-        border-radius: 12px;
-        padding: 32px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      /* --- Conteneur principal (La carte) --- */
+      .card {
+        background-color: #212936;
+        width: min(500px, 90%);
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
       }
 
       .form-div {
         display: none;
         flex-direction: column;
-        gap: 20px;
+        gap: 24px;
       }
 
+      /* Affiche uniquement l'étape active */
       .form-div.active {
         display: flex;
       }
 
       .form-div h1 {
-        font-size: 1.3em;
-        font-weight: 500;
-        margin-bottom: 10px;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #e5e7eb;
+        margin-bottom: 8px;
       }
 
-      /* --- CHAMPS DE SAISIE --- */
+      /* --- Champs de texte (Étape 1) --- */
       .input-group {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 8px;
       }
 
       .input-group label {
-        font-size: 0.85em;
-        color: var(--text-muted);
+        font-size: 0.85rem;
+        color: #e5e7eb;
       }
 
       .input-group input[type="text"],
       .input-group input[type="email"] {
         width: 100%;
-        padding: 14px;
-        border-radius: 8px;
-        border: 1px solid var(--input-border);
-        background-color: var(--input-bg);
-        color: white;
-        font-size: 1em;
+        padding: 14px 16px;
+        background-color: transparent;
+        border: 1px solid #4d5562;
+        border-radius: 10px;
+        color: #e5e7eb;
+        font-size: 0.95rem;
         outline: none;
-      }
-
-      .input-group input::placeholder {
-        color: var(--text-muted);
+        transition: border-color 0.2s;
       }
 
       .input-group input:focus {
-        border-color: var(--purple);
+        border-color: #845eee;
       }
 
-      /* --- TOPICS (CHECKBOX) --- */
+      .input-group input::placeholder {
+        color: #4d5562;
+      }
+
+      /* --- Boutons Radio stylisés (Étape 2) --- */
       .topic-option {
-        display: flex;
-        align-items: center;
-        padding: 16px;
-        background-color: #394150;
-        border-radius: 8px;
+        position: relative;
+      }
+
+      .topic-option input[type="radio"] {
+        position: absolute;
+        opacity: 0;
         cursor: pointer;
-        border: 1px solid transparent;
+      }
+
+      .topic-option label {
+        display: block;
+        padding: 16px 20px;
+        background-color: #394150;
+        border: 1px solid #4d5562;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.95rem;
         transition: all 0.2s;
-        font-size: 0.95em;
       }
 
-      /* On cache la vraie checkbox */
-      .topic-option input[type="checkbox"] {
-        display: none;
+      /* Style quand le radio est coché */
+      .topic-option input[type="radio"]:checked + label {
+        background-color: #5425af;
+        border-color: #845eee;
+        color: white;
       }
 
-      /* Effet quand la case est cochée (via JS ou CSS :has) */
-      .topic-option:has(input:checked) {
-        background-color: var(--purple);
-        border-color: var(--purple);
-      }
-
-      /* --- RÉSUMÉ (STEP 3) --- */
+      /* --- Résumé (Étape 3) --- */
       .summary-content {
         display: flex;
         flex-direction: column;
         gap: 16px;
+        font-size: 0.95rem;
       }
 
-      .summary-line {
-        font-size: 0.95em;
-        color: var(--text-muted);
-        line-height: 1.5;
+      .summary-content p {
+        color: #e5e7eb;
       }
 
-      .summary-line strong {
-        color: var(--text-main);
+      .summary-content strong {
         font-weight: 600;
+        color: #e5e7eb;
       }
 
-      .summary-list {
-        list-style-position: inside;
-        color: var(--text-main);
-        margin-top: 4px;
+      .summary-topics ul {
+        margin-top: 8px;
+        padding-left: 20px;
+        color: #e5e7eb;
       }
 
-      .summary-list li {
-        margin-bottom: 4px;
+      .summary-topics li {
+        margin-bottom: 6px;
       }
 
-      /* --- BOUTON CONTINUE --- */
+      /* --- Bouton Continue --- */
       .continue-btn {
-        margin-top: 10px;
         align-self: center;
-        padding: 12px 32px;
-        border-radius: 50px; /* Forme de pilule */
-        background-color: var(--purple);
+        background-color: #5425af;
         color: white;
-        font-weight: 600;
-        font-size: 0.9em;
+        font-weight: 500;
+        font-size: 0.95rem;
+        padding: 12px 32px;
         border: none;
+        border-radius: 24px;
         cursor: pointer;
-        transition: background 0.2s;
+        margin-top: 16px;
+        transition: background-color 0.2s;
       }
 
       .continue-btn:hover {
-        background-color: var(--purple-hover);
+        background-color: #845eee;
       }
 
-      /* --- DOTS DE NAVIGATION --- */
-      .dots-nav {
+      /* --- Navigation par Dots --- */
+      .navigation-container {
         display: flex;
         align-items: center;
         gap: 16px;
         margin-top: 24px;
       }
 
+      .step-label {
+        font-size: 0.85rem;
+        color: #4d5562;
+        margin-right: 8px;
+      }
+
+      .dots {
+        display: flex;
+        gap: 12px;
+      }
+
       .dot {
-        width: 8px;
-        height: 8px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
-        background: #4d5562;
+        background-color: #845eee4d; /* Couleur avec opacité */
         cursor: pointer;
-        transition:
-          background 0.2s,
-          transform 0.2s;
+        transition: background-color 0.2s;
       }
 
       .dot.active {
-        background: var(--purple);
-        box-shadow: 0 0 0 3px rgba(132, 94, 238, 0.2); /* Halo violet */
-      }
-
-      .step-label {
-        font-size: 0.8em;
-        color: var(--text-muted);
+        background-color: #845eee;
+        box-shadow: 0 0 8px #845eee;
       }
     </style>
   </head>
   <body>
-    <form id="registerForm">
-      <!-- ÉTAPE 1 -->
-      <div class="form-div active" data-step="1">
-        <h1>Register</h1>
-        <div class="input-group">
-          <label for="name">Name</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Enter your name"
-          />
+    <!-- La Carte Principale -->
+    <div class="card">
+      <form id="registerForm">
+        <!-- ÉTAPE 1 -->
+        <div class="form-div active" data-step="1">
+          <h1>Register</h1>
+
+          <div class="input-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Enter your name"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Example@gmail.com"
+            />
+          </div>
+
+          <button type="button" class="continue-btn" id="btn-next-1">
+            Continue
+          </button>
         </div>
-        <div class="input-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Example@gmail.com"
-          />
+
+        <!-- ÉTAPE 2 -->
+        <div class="form-div" data-step="2">
+          <h1>Which topics you are interested in?</h1>
+
+          <div class="topic-option">
+            <input
+              type="radio"
+              name="topics"
+              value="Software Development"
+              id="topic-software"
+            />
+            <label for="topic-software">Software Development</label>
+          </div>
+
+          <div class="topic-option">
+            <input
+              type="radio"
+              name="topics"
+              value="User Experience"
+              id="topic-ux"
+            />
+            <label for="topic-ux">User Experience</label>
+          </div>
+
+          <div class="topic-option">
+            <input
+              type="radio"
+              name="topics"
+              value="Graphic Design"
+              id="topic-design"
+            />
+            <label for="topic-design">Graphic Design</label>
+          </div>
+
+          <button type="button" class="continue-btn" id="btn-next-2">
+            Continue
+          </button>
         </div>
-      </div>
 
-      <!-- ÉTAPE 2 -->
-      <div class="form-div" data-step="2">
-        <h1>Which topics you are interested in?</h1>
+        <!-- ÉTAPE 3 -->
+        <div class="form-div" data-step="3">
+          <h1>Summary</h1>
 
-        <label class="topic-option">
-          <input type="checkbox" name="topics" value="Software Development" />
-          Software Development
-        </label>
+          <div class="summary-content">
+            <p><strong>Name:</strong> <span id="summaryName">—</span></p>
+            <p><strong>Email:</strong> <span id="summaryEmail">—</span></p>
 
-        <label class="topic-option">
-          <input type="checkbox" name="topics" value="User Experience" />
-          User Experience
-        </label>
+            <div class="summary-topics">
+              <p><strong>Topics:</strong></p>
+              <ul id="summaryTopicsList">
+                <!-- Les sujets s'injecteront ici -->
+              </ul>
+            </div>
+          </div>
 
-        <label class="topic-option">
-          <input type="checkbox" name="topics" value="Graphic Design" />
-          Graphic Design
-        </label>
-      </div>
-
-      <!-- ÉTAPE 3 : RÉSUMÉ -->
-      <div class="form-div" data-step="3">
-        <h1>Summary</h1>
-        <div class="summary-content">
-          <p class="summary-line">Name: <strong id="summaryName">—</strong></p>
-          <p class="summary-line">
-            Email: <strong id="summaryEmail">—</strong>
-          </p>
-          <p class="summary-line">Topics:</p>
-          <ul id="summaryTopics" class="summary-list">
-            <!-- Rempli par le JS -->
-          </ul>
+          <button type="button" class="continue-btn" id="btn-submit">
+            Continue
+          </button>
         </div>
-      </div>
+      </form>
+    </div>
 
-      <button type="button" class="continue-btn" id="continueBtn">
-        Continue
-      </button>
-    </form>
-
-    <!-- Navigation par dots -->
-    <div class="dots-nav">
+    <!-- Navigation sous la carte -->
+    <div class="navigation-container">
       <span class="step-label" id="stepLabel">Step 1 of 3</span>
-      <span class="dot active" data-step="1"></span>
-      <span class="dot" data-step="2"></span>
-      <span class="dot" data-step="3"></span>
+      <div class="dots">
+        <span class="dot active" data-step="1"></span>
+        <span class="dot" data-step="2"></span>
+        <span class="dot" data-step="3"></span>
+      </div>
     </div>
 
     <script>
-      const form = document.getElementById("registerForm");
       const steps = document.querySelectorAll(".form-div");
       const dots = document.querySelectorAll(".dot");
       const stepLabel = document.getElementById("stepLabel");
-      const continueBtn = document.getElementById("continueBtn");
+
+      // Boutons
+      const btnNext1 = document.getElementById("btn-next-1");
+      const btnNext2 = document.getElementById("btn-next-2");
+      const btnSubmit = document.getElementById("btn-submit");
 
       let currentStep = 1;
       const totalSteps = steps.length;
 
-      // Affiche l'étape demandée et met à jour dots + label
+      // Fonction pour changer d'étape
       function goToStep(step) {
         currentStep = Math.min(Math.max(step, 1), totalSteps);
 
+        // Met à jour l'affichage des formulaires
         steps.forEach((el) => {
           el.classList.toggle(
             "active",
@@ -300,6 +340,7 @@
           );
         });
 
+        // Met à jour les dots
         dots.forEach((dot) => {
           dot.classList.toggle(
             "active",
@@ -307,88 +348,78 @@
           );
         });
 
+        // Met à jour le texte
         stepLabel.textContent = `Step ${currentStep} of ${totalSteps}`;
 
-        // Met à jour le résumé quand on arrive à l'étape 3
-        if (currentStep === 3) updateSummary();
-
-        // Change le texte du bouton à la fin
-        continueBtn.textContent =
-          currentStep === totalSteps ? "Submit" : "Continue";
+        // Si on arrive à l'étape 3, on génère le résumé
+        if (currentStep === 3) {
+          updateSummary();
+        }
       }
 
-      // Récupère les valeurs du formulaire
+      // Récupère les données saisies
       function getFormData() {
         const name = document.getElementById("name").value.trim();
         const email = document.getElementById("email").value.trim();
+        const topicEl = document.querySelector('input[name="topics"]:checked');
+        const topic = topicEl ? topicEl.value : null;
 
-        // Récupérer toutes les checkboxes cochées
-        const checkedTopics = Array.from(
-          form.querySelectorAll('input[name="topics"]:checked'),
-        ).map((cb) => cb.value);
-
-        return { name, email, checkedTopics };
+        return { name, email, topic };
       }
 
-      // Remplit l'étape 3 avec les infos saisies
+      // Met à jour l'étape 3 avec les données
       function updateSummary() {
-        const { name, email, checkedTopics } = getFormData();
+        const { name, email, topic } = getFormData();
 
         document.getElementById("summaryName").textContent = name || "—";
         document.getElementById("summaryEmail").textContent = email || "—";
 
-        const listContainer = document.getElementById("summaryTopics");
-        listContainer.innerHTML = ""; // On vide la liste
+        const topicsList = document.getElementById("summaryTopicsList");
+        topicsList.innerHTML = ""; // On vide la liste
 
-        if (checkedTopics.length > 0) {
-          checkedTopics.forEach((topic) => {
-            const li = document.createElement("li");
-            li.textContent = topic;
-            listContainer.appendChild(li);
-          });
+        if (topic) {
+          const li = document.createElement("li");
+          li.textContent = topic;
+          topicsList.appendChild(li);
         } else {
-          listContainer.innerHTML = "<li>—</li>";
+          const li = document.createElement("li");
+          li.textContent = "—";
+          topicsList.appendChild(li);
         }
       }
 
-      // Clic sur un dot
+      // Navigation par clic sur les dots
       dots.forEach((dot) => {
         dot.addEventListener("click", () => {
           goToStep(Number(dot.dataset.step));
         });
       });
 
-      // Bouton Continue
-      continueBtn.addEventListener("click", () => {
-        if (currentStep < totalSteps) {
-          // Validation étape 1 (Nom et Email)
-          if (currentStep === 1) {
-            const { name, email } = getFormData();
-            if (!name || !email) {
-              alert("Veuillez remplir votre nom et votre email.");
-              return;
-            }
-          }
-
-          // Validation étape 2 (Au moins un topic)
-          if (currentStep === 2) {
-            const { checkedTopics } = getFormData();
-            if (checkedTopics.length === 0) {
-              alert("Veuillez sélectionner au moins un sujet.");
-              return;
-            }
-          }
-
-          goToStep(currentStep + 1);
-        } else {
-          // Action finale (Submit)
-          alert("Inscription réussie !");
-          // Ici, tu pourras envoyer les données à ton serveur
+      // Bouton Continue Étape 1
+      btnNext1.addEventListener("click", () => {
+        const { name, email } = getFormData();
+        if (!name || !email) {
+          alert("Merci de remplir tous les champs.");
+          return;
         }
+        goToStep(2);
       });
 
-      // Initialisation
-      goToStep(1);
+      // Bouton Continue Étape 2
+      btnNext2.addEventListener("click", () => {
+        const { topic } = getFormData();
+        if (!topic) {
+          alert("Merci de sélectionner un sujet.");
+          return;
+        }
+        goToStep(3);
+      });
+
+      // Bouton Continue/Submit Étape 3
+      btnSubmit.addEventListener("click", () => {
+        alert("Formulaire validé avec succès !");
+        // Ici tu mettras ton code d'envoi vers un serveur (fetch)
+      });
     </script>
   </body>
 </html>
